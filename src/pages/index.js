@@ -4,8 +4,6 @@ import {
   Box,
   Typography,
   Paper,
-  Grid,
-  CircularProgress,
   useTheme,
   Drawer,
   IconButton,
@@ -17,28 +15,13 @@ import {
   AppBar,
   Toolbar,
   Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
 } from "@mui/material";
-import { PieChart, BarChart } from "@mui/x-charts";
-
+import InvoiceProcessedCard from "./InvoiceProcessedCard";
+import { PieChart } from "@mui/x-charts";
 import SettingsIcon from "@mui/icons-material/Settings";
+import PaymentDueCard from "./PaymentDueCard";
 
-// Data definitions (unchanged)
-const revenueData = [
-  { month: "Jan", 2020: -10, 2021: 15, 2022: 20 },
-  { month: "Feb", 2020: 5, 2021: -5, 2022: 10 },
-  { month: "Mar", 2020: -15, 2021: 25, 2022: 30 },
-  { month: "Apr", 2020: 0, 2021: 10, 2022: 15 },
-  { month: "May", 2020: -5, 2021: 5, 2022: 20 },
-  { month: "Jun", 2020: 10, 2021: 0, 2022: 10 },
-  { month: "Jul", 2020: -10, 2021: 15, 2022: 25 },
-];
-
+// Data for SpendingByCategory
 const spendingData = [
   { category: "Housing", value: 1200 },
   { category: "Food", value: 450 },
@@ -47,188 +30,23 @@ const spendingData = [
   { category: "Utilities", value: 180 },
   { category: "Other", value: 300 },
 ];
-// Define RecentTransactions FIRST
-const RecentTransactions = () => {
-  const theme = useTheme();
 
-  return (
-    <Box>
-      <Typography variant="h6" sx={{ fontWeight: 600, mb: 3 }}>
-        Recent Transactions
-      </Typography>
-      <TableContainer
-        component={Paper}
-        sx={{ borderRadius: 2, boxShadow: theme.shadows[2] }}
-      >
-        {/* Your existing table code */}
-      </TableContainer>
-    </Box>
-  );
-};
-
-// THEN define TransactionsAndGrowth
-const TransactionsAndGrowth = () => {
-  return (
-    <Paper sx={{ p: 3, borderRadius: 3, boxShadow: 3 }}>
-      <Grid container spacing={5}>
-        <Grid item xs={12} md={8}>
-          <RecentTransactions /> {/* Now properly defined */}
-        </Grid>
-        <Grid item xs={12} md={4}>
-          <GrowthIndicator />
-        </Grid>
-      </Grid>
-    </Paper>
-  );
-};
-const transactions = [
-  {
-    date: "May 5, 2023",
-    description: "Grocery Store",
-    category: "Food",
-    amount: -125.75,
-  },
-  {
-    date: "May 3, 2023",
-    description: "Salary Deposit",
-    category: "Income",
-    amount: 3500.0,
-  },
-  {
-    date: "May 1, 2023",
-    description: "Electric Bill",
-    category: "Utilities",
-    amount: -85.2,
-  },
-  {
-    date: "Apr 28, 2023",
-    description: "Online Shopping",
-    category: "Shopping",
-    amount: -64.99,
-  },
-  {
-    date: "Apr 25, 2023",
-    description: "Restaurant",
-    category: "Dining",
-    amount: -42.5,
-  },
-];
-
-const chartData = [
-  { month: "January", desktop: 186, mobile: 80 },
-  { month: "February", desktop: 305, mobile: 200 },
-  { month: "March", desktop: 237, mobile: 120 },
-  { month: "April", desktop: 73, mobile: 190 },
-  { month: "May", desktop: 209, mobile: 130 },
-  { month: "June", desktop: 214, mobile: 140 },
-];
-
-// Updated GrowthIndicator (unchanged)
-const GrowthIndicator = () => {
-  const theme = useTheme();
-  return (
-    <Box>
-      <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
-        growth
-      </Typography>
-      <Box sx={{ position: "relative", display: "inline-flex", my: 3 }}>
-        <CircularProgress
-          variant="determinate"
-          value={78}
-          size={140}
-          thickness={6}
-          sx={{ color: theme.palette.primary.main }}
-        />
-        <Box
-          sx={{
-            top: 0,
-            left: 0,
-            bottom: 0,
-            right: 0,
-            position: "absolute",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Typography variant="h4" component="div" color="text.primary">
-            78%
-          </Typography>
-        </Box>
-      </Box>
-      <Box sx={{ mt: 2 }}>
-        <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-          2022: $32.5K
-        </Typography>
-        <Typography variant="body2" color="text.secondary">
-          2021: $41.2K
-        </Typography>
-      </Box>
-    </Box>
-  );
-};
-
-// Updated ProfileReport (now using @mui/x-charts)
-const ProfileReport = () => {
-  return (
-    <Paper sx={{ p: 3, borderRadius: 3, height: "100%", boxShadow: 3 }}>
-      <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
-        Profile Report
-      </Typography>
-      <Box sx={{ display: "flex", justifyContent: "space-between", mb: 3 }}>
-        <Box>
-          <Typography variant="body2" color="text.secondary">
-            Year 2021
-          </Typography>
-          <Typography variant="h5" sx={{ fontWeight: 600 }}>
-            $41.2K
-          </Typography>
-        </Box>
-        <Box textAlign="right">
-          <Typography variant="body2" color="text.secondary">
-            Growth
-          </Typography>
-          <Typography
-            variant="h5"
-            color="success.main"
-            sx={{ fontWeight: 600 }}
-          >
-            ↑ 68.2%
-          </Typography>
-        </Box>
-      </Box>
-      <Box sx={{ height: 300 }}>
-        <BarChart
-          series={[
-            { data: chartData.map((item) => item.desktop), label: "Desktop" },
-            { data: chartData.map((item) => item.mobile), label: "Mobile" },
-          ]}
-          xAxis={[
-            {
-              data: chartData.map((item) => item.month),
-              scaleType: "band",
-              tickFormatter: (value) => value.slice(0, 3),
-            },
-          ]}
-          height={300}
-          colors={["#3B82F6", "#EF4444"]}
-        />
-      </Box>
-      <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
-        Showing total visitors for the last 6 months
-      </Typography>
-    </Paper>
-  );
-};
-
-// Updated SpendingByCategory (using @mui/x-charts PieChart)
+// SpendingByCategory component
 const SpendingByCategory = () => {
   return (
-    <Paper sx={{ p: 3, borderRadius: 3, height: "100%", boxShadow: 3 }}>
+    <Paper
+      sx={{
+        p: 3,
+        borderRadius: 1,
+        height: "80%",
+        boxShadow: 3,
+        width: { xs: "100%", md: "50%" },
+      }}
+    >
       <Typography variant="h6" sx={{ fontWeight: 600, mb: 2 }}>
         Spending by Category
       </Typography>
-      <Box sx={{ height: 320, display: "flex", justifyContent: "center" }}>
+      <Box sx={{ height: 300, display: "flex", justifyContent: "center" }}>
         <PieChart
           series={[
             {
@@ -249,6 +67,7 @@ const SpendingByCategory = () => {
   );
 };
 
+// ThemeCustomizer component
 const ThemeCustomizer = ({ mode, setMode, primaryColor, setPrimaryColor }) => {
   const theme = useTheme();
 
@@ -444,20 +263,28 @@ export default function Home({ mode, setMode, primaryColor, setPrimaryColor }) {
           />
         </Drawer>
 
-        <Grid container spacing={5} sx={{ mb: 5 }}>
-          <Grid item xs={12} md={8}>
-            <ProfileReport />
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <SpendingByCategory />
-          </Grid>
-        </Grid>
+        {/* First row with SpendingByCategory and PaymentDueCard */}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: { xs: "column", md: "row" },
+            gap: 7,
+            mb: 7,
+          }}
+        >
+          <SpendingByCategory />
+          <PaymentDueCard />
+        </Box>
 
-        <Grid container spacing={5}>
-          <Grid item xs={12}>
-            <TransactionsAndGrowth />
-          </Grid>
-        </Grid>
+        {/* InvoiceProcessedCard with adjusted width to match spacing */}
+        <Box
+          sx={{
+            width: { xs: "100%", md: "calc(50% + 50%)" }, // Match the width of first row cards combined
+            maxWidth: { md: "calc(50% + 50% + 24px)" }, // Account for gap
+          }}
+        >
+          <InvoiceProcessedCard />
+        </Box>
       </Box>
     </Box>
   );
