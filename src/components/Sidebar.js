@@ -78,13 +78,12 @@ const Sidebar = ({ isSidebarOpen, setSidebarOpen, primaryColor }) => {
       <Divider sx={{ borderColor: theme.palette.divider, mx: 2 }} />
       <List sx={{ pt: 2 }}>
         {[
-          { text: "Dashboard", icon: <DashboardIcon /> },
-          { text: "Accounts", icon: <AccountBalanceIcon /> },
-          { text: "Transactions", icon: <ReceiptIcon /> },
-          { text: "Cards", icon: <CreditCardIcon /> },
-          { text: "Transfers", icon: <TransferIcon /> },
-          { text: "Budget", icon: <PieChartIcon /> },
-          { text: "Investments", icon: <SavingsIcon /> },
+          { text: "HOME", icon: <DashboardIcon /> },
+          { text: "ANALYSER", icon: <AccountBalanceIcon /> },
+          { text: "BUDGET", icon: <ReceiptIcon /> },
+
+          { text: "INVESTMENT", icon: <SavingsIcon /> },
+          { text: "CHAT", icon: <PieChartIcon /> },
         ].map((item, index) => (
           <ListItem
             button

@@ -20,7 +20,7 @@ import InvoiceProcessedCard from "./InvoiceProcessedCard";
 import { PieChart } from "@mui/x-charts";
 import SettingsIcon from "@mui/icons-material/Settings";
 import PaymentDueCard from "./PaymentDueCard";
-
+import Tooltip from "@mui/material/Tooltip";
 // Data for SpendingByCategory
 const spendingData = [
   { category: "Housing", value: 1200 },
@@ -233,9 +233,10 @@ export default function Home({ mode, setMode, primaryColor, setPrimaryColor }) {
       sx={{
         backgroundColor: theme.palette.background.default,
         minHeight: "100vh",
+        position: "relative", // Ensure the parent Box can contain absolutely positioned children
       }}
     >
-      <AppBar position="static" sx={{ mb: 5 }}>
+      <AppBar position="static" sx={{ mb: 0 }}>
         <Toolbar>
           <Typography
             variant="h6"
@@ -244,14 +245,48 @@ export default function Home({ mode, setMode, primaryColor, setPrimaryColor }) {
           >
             Finance Dashboard
           </Typography>
-          <Button color="inherit">Overview</Button>
-          <Button color="inherit">Reports</Button>
-          <Button color="inherit">Transactions</Button>
-          <IconButton color="inherit" onClick={toggleDrawer(true)}>
-            <SettingsIcon />
-          </IconButton>
         </Toolbar>
       </AppBar>
+
+      {/* Settings button in right corner below navbar */}
+      <Box
+        sx={{
+          position: "absolute", // Keep the original positioning
+          top: 64, // Keep the original top value
+          right: 0, // Keep the original right value
+          px: { xs: 3, md: 5 }, // Keep the original padding
+          zIndex: 10, // Keep the original zIndex
+        }}
+      >
+        <Tooltip title="Customize Theme" arrow>
+          <IconButton
+            color="primary"
+            onClick={toggleDrawer(true)}
+            sx={{
+              mr: "-60px", // Keep the original margin-right
+              mt: "250px", // Keep the original margin-top
+              backgroundColor: primaryColor || theme.palette.primary.main, // Use the theme's primary color or selected primaryColor
+              color: theme.palette.getContrastText(
+                primaryColor || theme.palette.primary.main
+              ), // Ensure icon color contrasts with the background
+              boxShadow: theme.shadows[4], // Keep the subtle shadow for a floating effect
+              borderRadius: "4px", // Box shape with slightly rounded corners for a modern look
+              width: 48, // Keep the width
+              height: 48, // Keep the height
+              transition: "all 0.3s ease", // Smooth transition for hover effects
+              "&:hover": {
+                backgroundColor: theme.palette.augmentColor({
+                  color: { main: primaryColor || theme.palette.primary.main },
+                }).dark, // Darken on hover
+                transform: "scale(1.1)", // Slight scale animation on hover
+                boxShadow: theme.shadows[6], // Increase shadow on hover
+              },
+            }}
+          >
+            <SettingsIcon sx={{ fontSize: 24 }} /> {/* Keep the icon size */}
+          </IconButton>
+        </Tooltip>
+      </Box>
 
       <Box sx={{ p: { xs: 3, md: 5 } }}>
         <Drawer anchor="right" open={drawerOpen} onClose={toggleDrawer(false)}>
@@ -270,17 +305,18 @@ export default function Home({ mode, setMode, primaryColor, setPrimaryColor }) {
             flexDirection: { xs: "column", md: "row" },
             gap: 7,
             mb: 7,
+            pr: { xs: 0, md: 5 }, // Add right padding to avoid overlap with the settings icon
           }}
         >
           <SpendingByCategory />
-          <PaymentDueCard />
+          <PaymentDueCard sidebarOpen={false} />
         </Box>
 
-        {/* InvoiceProcessedCard with adjusted width to match spacing */}
+        {/* InvoiceProcessedCard */}
         <Box
           sx={{
-            width: { xs: "100%", md: "calc(50% + 50%)" }, // Match the width of first row cards combined
-            maxWidth: { md: "calc(50% + 50% + 24px)" }, // Account for gap
+            width: { xs: "100%", md: "calc(50% + 50%)" },
+            maxWidth: { md: "calc(50% + 50% + 24px)" },
           }}
         >
           <InvoiceProcessedCard />
